@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Collection;
 use Mpociot\Documentarian\Documentarian;
+use PHPUnit\Framework\TestCase;
 
 function glob_recursive($pattern, $flags = 0)
 {
@@ -15,14 +16,16 @@ function glob_recursive($pattern, $flags = 0)
 }
 
 
-class DocumentarianTest extends PHPUnit_Framework_TestCase
+class DocumentarianTest extends TestCase
 {
 
-    public function tearDown()
+    public function tearDown(): void
     {
         exec('rm -rf ' . __DIR__ . '/output');
         mkdir(__DIR__ . '/output');
         touch(__DIR__ . '/output/.gitkeep');
+
+        parent::tearDown();
     }
 
     public function test_creates_documentation_folder_and_copies_assets()
@@ -95,22 +98,22 @@ class DocumentarianTest extends PHPUnit_Framework_TestCase
         // test1.md - no frontmatter yaml present
         copy(__DIR__ . '/files/test1.md', $outputDir . '/source/index.md');
         $documentarian->generate($outputDir);
-        $this->assertFileEquals($outputDir . '/index.html', $assertionDir . '/test1.html');
+        $this->assertFileEquals($assertionDir . '/test1.html', $outputDir . '/index.html');
 
         // test2.md - valid frontmatter yaml
         copy(__DIR__ . '/files/test2.md', $outputDir . '/source/index.md');
         $documentarian->generate($outputDir);
-        $this->assertFileEquals($outputDir . '/index.html', $assertionDir . '/test2.html');
+        $this->assertFileEquals($assertionDir . '/test2.html', $outputDir . '/index.html');
 
         // test3.md - include and parse additional markdown files
         copy(__DIR__ . '/files/test3.md', $outputDir . '/source/index.md');
         $documentarian->generate($outputDir);
-        $this->assertFileEquals($outputDir . '/index.html', $assertionDir . '/test3.html');
+        $this->assertFileEquals($assertionDir . '/test3.html', $outputDir . '/index.html');
 
         // test4.md - ignore not existing include file
         copy(__DIR__ . '/files/test4.md', $outputDir . '/source/index.md');
         $documentarian->generate($outputDir);
-        $this->assertFileEquals($outputDir . '/index.html', $assertionDir . '/test4.html');
+        $this->assertFileEquals($assertionDir . '/test4.html', $outputDir . '/index.html');
 
     }
 

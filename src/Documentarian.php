@@ -4,6 +4,7 @@ namespace Mpociot\Documentarian;
 
 use Illuminate\Support\Arr;
 use Mni\FrontYAML\Parser;
+use Mpociot\Documentarian\Overrides\GitHubFlavouredCommonMarkParser;
 use Windwalker\Renderer\BladeRenderer;
 
 /**
@@ -72,14 +73,17 @@ class Documentarian
             return false;
         }
 
-        $parser = new Parser();
+        $parser = new Parser(null, new GitHubFlavouredCommonMarkParser());
 
-        $document = $parser->parse(file_get_contents($source_dir . '/index.md'));
+        $document = $parser->parse($cont = file_get_contents($source_dir . '/index.md'));
 
-        $frontmatter = $document->getYAML();
+        $frontmatter = $document->getYAML() ?? [];
         $html = $document->getContent();
 
-        $renderer = new BladeRenderer([__DIR__ . '/../resources/views'], ['cache_path' => $source_dir . '/_tmp']);
+        $renderer = new BladeRenderer([
+            'paths' => [__DIR__ . '/../resources/views'],
+            'cache_path' => $source_dir . '/_tmp',
+        ]);
 
         // Parse and include optional include markdown files
         if (isset($frontmatter['includes'])) {
@@ -101,6 +105,8 @@ class Documentarian
         // Copy assets
         rcopy($source_dir . '/assets/images/', $folder . '/images');
         rcopy($source_dir . '/assets/stylus/fonts/', $folder . '/css/fonts');
+
+        return null;
     }
 
 }

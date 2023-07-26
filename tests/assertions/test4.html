@@ -54,13 +54,17 @@
 </blockquote>
 <pre><code class="language-ruby">require 'kittn'
 
-api = Kittn::APIClient.authorize!('meowmeowmeow')</code></pre>
+api = Kittn::APIClient.authorize!('meowmeowmeow')
+</code></pre>
 <pre><code class="language-python">import kittn
 
-api = kittn.authorize('meowmeowmeow')</code></pre>
+api = kittn.authorize('meowmeowmeow')
+</code></pre>
 <pre><code class="language-bash"># With shell, you can just pass the correct header with each request
-curl "api_endpoint_here"
-  -H "Authorization: meowmeowmeow"</code></pre><h1>Errors</h1>
+curl &quot;api_endpoint_here&quot;
+  -H &quot;Authorization: meowmeowmeow&quot;
+</code></pre>
+<h1>Errors</h1>
 <aside class="notice">This error section is stored in a separate file in `includes/_errors.md`. Whiteboard allows you to optionally separate out your docs into many files...just save them to the `includes` folder and add them to the top of your `index.md`'s frontmatter. Files are included in the order listed.</aside>
 <p>The Kittn API uses the following error codes:</p>
 <table>
@@ -117,6 +121,7 @@ curl "api_endpoint_here"
 </tr>
 </tbody>
 </table>
+
       </div>
       <div class="dark-box">
                         <div class="lang-selector">
